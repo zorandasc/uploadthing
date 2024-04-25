@@ -8,7 +8,7 @@ import { getAll, deleteImage } from "./actions.js";
 
 const UploadDropzone = generateUploadDropzone();
 
-const page = () => {
+const Home = () => {
   const [images, setImages] = useState([]);
 
   const handleRemove = async (key) => {
@@ -108,4 +108,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Home;
