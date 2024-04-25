@@ -52,13 +52,13 @@ const Home = () => {
 
   return (
     <main className="main">
-      {images.length === 0 ? (
+      {images?.length === 0 ? (
         <div style={{ textAlign: "center" }}>
           <i className="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
         </div>
       ) : (
         <section className="uploaded-images">
-          {images.map((item, i) => (
+          {images?.map((item, i) => (
             <div key={i} className="image-container">
               <Image
                 priority
