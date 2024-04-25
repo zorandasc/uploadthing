@@ -1,95 +1,111 @@
+"use client";
+import { generateUploadDropzone } from "@uploadthing/react";
+import "./uploadPage.css";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import styles from "./page.module.css";
+import imageCompression from "browser-image-compression";
+import { getAll, deleteImage } from "./actions.js";
 
-export default function Home() {
+const UploadDropzone = generateUploadDropzone();
+
+const page = () => {
+  const [images, setImages] = useState([]);
+
+  const handleRemove = async (key) => {
+    const oldImages = [...images];
+    const updatedImages = images.filter((image) => image.key !== key);
+    //Update the state with the filtered images
+    setImages(updatedImages);
+
+    const response = await deleteImage(key);
+    console.log(response);
+    if (!response) setImages(oldImages);
+  };
+
+  const handleBeforeUpload = async (files) => {
+    // Compress each file before uploading
+    const compressedFiles = await Promise.all(
+      files.map(async (file) => {
+        try {
+          const compressedFile = await imageCompression(file, {
+            maxSizeMB: 0.5, // Maximum file size in MB
+            maxWidthOrHeight: 1920, // Maximum width or height of the image
+          });
+          return compressedFile;
+        } catch (error) {
+          console.error("Error compressing file:", error);
+          return file; // Return original file if compression fails
+        }
+      })
+    );
+
+    return compressedFiles;
+  };
+
+  useEffect(() => {
+    const handleGetAll = async () => {
+      const data = await getAll();
+      setImages(data);
+    };
+    handleGetAll();
+  }, []);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="main">
+      {images.length === 0 ? (
+        <div style={{ textAlign: "center" }}>
+          <i className="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
         </div>
-      </div>
+      ) : (
+        <section className="uploaded-images">
+          {images.map((item, i) => (
+            <div key={i} className="image-container">
+              <Image
+                priority
+                src={`https://utfs.io/f/${item.key}`}
+                alt="Image"
+                layout="fill"
+                className="image"
+                sizes="100%"
+                blurDataURL={`https://utfs.io/f/${item.key}`}
+                placeholder="blur"
+              />
+              <button
+                onClick={() => {
+                  handleRemove(item.key);
+                }}
+                className="remove-btn"
+              >
+                <i className="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+          ))}
+        </section>
+      )}
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <UploadDropzone
+        className="custom-class"
+        endpoint="multipleImageUploader"
+        onClientUploadComplete={(res) => {
+          // Do something with the response
+          console.log("Files: ", res);
+          alert("Upload Completed");
+          const newImages = res?.map(({ customId, key, name }) => {
+            return { customId, key, name };
+          });
+          setImages([...images, ...newImages]);
+        }}
+        onUploadError={(error) => {
+          alert(`ERROR! ${error.message}`);
+        }}
+        onUploadBegin={(name) => {
+          // Do something once upload begins
+          console.log("Uploading: ", name);
+        }}
+        onBeforeUploadBegin={handleBeforeUpload}
+      />
     </main>
   );
-}
+};
+
+export default page;
