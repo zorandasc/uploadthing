@@ -1,15 +1,15 @@
 "use client";
-import { generateUploadDropzone } from "@uploadthing/react";
 import "./uploadPage.css";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import imageCompression from "browser-image-compression";
 import { getAll, deleteImage } from "./actions.js";
-
-const UploadDropzone = generateUploadDropzone();
+import NavbarBottom2 from "./components/NavbarBottom2";
+import UploadedImages from "./components/UploadedImages";
+import UploadDrop from "./components/UploadDrop";
 
 const Home = () => {
   const [images, setImages] = useState([]);
+  const [displayDropZone, setDsiplayDropZone] = useState(false);
 
   const handleRemove = async (key) => {
     const oldImages = [...images];
@@ -20,6 +20,16 @@ const Home = () => {
     const response = await deleteImage(key);
     console.log(response);
     if (!response) setImages(oldImages);
+  };
+
+  const handleOnUploadComplete = (res) => {
+    // Do something with the response
+    console.log("Files: ", res);
+    alert("Upload Completed");
+    const newImages = res?.map(({ customId, key, name }) => {
+      return { customId, key, name };
+    });
+    setImages([...newImages, ...images]);
   };
 
   const handleBeforeUpload = async (files) => {
@@ -42,6 +52,10 @@ const Home = () => {
     return compressedFiles;
   };
 
+  const showDropZone = () => {
+    setDsiplayDropZone(!displayDropZone);
+  };
+
   useEffect(() => {
     const handleGetAll = async () => {
       const data = await getAll();
@@ -51,60 +65,22 @@ const Home = () => {
   }, []);
 
   return (
-    <main className="main">
-      {images?.length === 0 ? (
-        <div style={{ textAlign: "center" }}>
-          <i className="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
-        </div>
-      ) : (
-        <section className="uploaded-images">
-          {images?.map((item, i) => (
-            <div key={i} className="image-container">
-              <Image
-                priority
-                src={`https://utfs.io/f/${item.key}`}
-                alt="Image"
-                layout="fill"
-                className="image"
-                sizes="100%"
-                blurDataURL={`https://utfs.io/f/${item.key}`}
-                placeholder="blur"
-              />
-              <button
-                onClick={() => {
-                  handleRemove(item.key);
-                }}
-                className="remove-btn"
-              >
-                <i className="fa fa-times" aria-hidden="true"></i>
-              </button>
-            </div>
-          ))}
-        </section>
-      )}
+    <>
+      <NavbarBottom2 handleDropZone={showDropZone}></NavbarBottom2>
+      <main className="main">
+        <UploadedImages
+          images={images}
+          handleRemove={handleRemove}
+        ></UploadedImages>
 
-      <UploadDropzone
-        className="custom-class"
-        endpoint="multipleImageUploader"
-        onClientUploadComplete={(res) => {
-          // Do something with the response
-          console.log("Files: ", res);
-          alert("Upload Completed");
-          const newImages = res?.map(({ customId, key, name }) => {
-            return { customId, key, name };
-          });
-          setImages([...images, ...newImages]);
-        }}
-        onUploadError={(error) => {
-          alert(`ERROR! ${error.message}`);
-        }}
-        onUploadBegin={(name) => {
-          // Do something once upload begins
-          console.log("Uploading: ", name);
-        }}
-        onBeforeUploadBegin={handleBeforeUpload}
-      />
-    </main>
+        {displayDropZone && (
+          <UploadDrop
+            handleOnUploadComplete={handleOnUploadComplete}
+            handleBeforeUpload={handleBeforeUpload}
+          ></UploadDrop>
+        )}
+      </main>
+    </>
   );
 };
 

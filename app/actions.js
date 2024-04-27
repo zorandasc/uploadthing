@@ -20,8 +20,6 @@ export async function getAll() {
 }
 
 export async function deleteImage(key) {
-  console.log(key);
-  console.log(`${key}`);
   try {
     const response = await fetch("https://uploadthing.com/api/deleteFile", {
       method: "POST",
