@@ -8,7 +8,10 @@ import UploadDrop from "./components/UploadDrop";
 import UploadButton from "./components/UploadButton";
 
 
+import { usePathname } from 'next/navigation'
+
 const Home = () => {
+  const pathname = usePathname()
   //const searchParams = useSearchParams();
   //const displayDropZone=searchParams.has("upload")
 
@@ -73,6 +76,7 @@ const Home = () => {
         <UploadedImages
           images={images}
           handleRemove={handleRemove}
+          pathname={pathname}
         ></UploadedImages>
 
         {displayDropZone && (

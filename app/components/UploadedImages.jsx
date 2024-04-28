@@ -1,8 +1,10 @@
 import React from "react";
-import Image from "next/image"
-import "./uploadedImages.css"
+import Image from "next/image";
+import "./uploadedImages.css";
+import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 
-const UploadedImages = ({ images, handleRemove }) => {
+const UploadedImages = ({ images, handleRemove, pathname }) => {
   return (
     <>
       {images?.length === 0 ? (
@@ -23,14 +25,26 @@ const UploadedImages = ({ images, handleRemove }) => {
                 blurDataURL={`https://utfs.io/f/${item.key}`}
                 placeholder="blur"
               />
-              <button
-                onClick={() => {
-                  handleRemove(item.key);
-                }}
-                className="remove-btn"
-              >
-                <i className="fa fa-times" aria-hidden="true"></i>
-              </button>
+              {pathname === "/user" && (
+                <button
+                  onClick={() => {
+                    handleRemove(item.key);
+                  }}
+                  className="remove-btn"
+                >
+                  <i className="fa fa-times" aria-hidden="true"></i>
+                </button>
+              )}
+              {pathname === "/likes" && (
+                <button className="heart-btn">
+                  <FaHeart />
+                </button>
+              )}
+              {pathname === "/" && (
+                <button className="heart-btn">
+                  <FaRegHeart />
+                </button>
+              )}
             </div>
           ))}
         </section>

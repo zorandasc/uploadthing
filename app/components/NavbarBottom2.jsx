@@ -7,7 +7,6 @@ import { usePathname } from 'next/navigation'
 
 const NavbarBottom2 = () => {
   const pathname = usePathname()
-  console.log("pathname", pathname)
   return (
     <nav className="nav2">
       <menu className="menu2">
@@ -21,7 +20,11 @@ const NavbarBottom2 = () => {
             <i className="fa fa-users" aria-hidden="true"></i>
           </Link>
         </li>
-        
+        <li className={`link ${pathname === '/uploadpage' ? 'active' : ''}`}>
+          <Link href="/uploadpage">
+          <i className="fa fa-cloud-upload" aria-hidden="true"></i>
+          </Link>
+        </li>
         <li className={`link ${pathname === '/likes' ? 'active' : ''}`}>
           <Link href="/likes">
             <i className="fa fa-heart" aria-hidden="true"></i>

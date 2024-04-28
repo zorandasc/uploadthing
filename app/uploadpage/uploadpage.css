@@ -1,0 +1,19 @@
+    /* Mobile layout */
+    @media only screen and (max-width: 767px) {
+        .uploaded-images-small {
+           align-items: center;
+           display: grid;
+           grid-template-columns: repeat(4, 1fr);
+           gap: 10px; /* Adjust the gap between images as needed */
+           
+        }
+       }
+       
+       /* Desktop layout */
+       @media only screen and (min-width: 768px) {
+        .uploaded-images-small {
+           display: grid;
+           grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+           gap: 10px; /* Adjust the gap between images as needed */
+        }
+       }
