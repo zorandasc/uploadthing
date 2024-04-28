@@ -1,0 +1,28 @@
+.container1{
+    background: transparent;
+  position: fixed;
+  display: grid;
+  place-content: center;
+  -webkit-tap-highlight-color: transparent;
+  bottom: 70px;
+  left: 0;
+  width: 100%;
+  z-index: 2000;
+
+}
+
+.menu1 {
+    position: relative;
+    top: 0px;
+    padding: 15px;
+    cursor: pointer;
+    /* From https://css.glass */
+/* From https://css.glass */
+background: rgba(255, 255, 255, 0.67);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(7.1px);
+-webkit-backdrop-filter: blur(7.1px);
+border: 1px solid rgba(255, 255, 255, 0.91);
+color: #6c9cc6;
+  }

@@ -6,10 +6,17 @@ import { getAll, deleteImage } from "./actions.js";
 import NavbarBottom2 from "./components/NavbarBottom2";
 import UploadedImages from "./components/UploadedImages";
 import UploadDrop from "./components/UploadDrop";
+import MenuButton from "./components/MenuButton";
+import UploadButton from "./components/UploadButton";
+
+import { useSearchParams } from "next/navigation";
 
 const Home = () => {
+  //const searchParams = useSearchParams();
+  //const displayDropZone=searchParams.has("upload")
+
   const [images, setImages] = useState([]);
-  const [displayDropZone, setDsiplayDropZone] = useState(false);
+  const [displayDropZone, setDisplayDropZone] = useState(false);
 
   const handleRemove = async (key) => {
     const oldImages = [...images];
@@ -52,10 +59,6 @@ const Home = () => {
     return compressedFiles;
   };
 
-  const showDropZone = () => {
-    setDsiplayDropZone(!displayDropZone);
-  };
-
   useEffect(() => {
     const handleGetAll = async () => {
       const data = await getAll();
@@ -66,7 +69,11 @@ const Home = () => {
 
   return (
     <>
-      <NavbarBottom2 handleDropZone={showDropZone}></NavbarBottom2>
+      {/*<NavbarBottom2 handleDropZone={showDropZone}></NavbarBottom2>*/}
+      {/*<MenuButton></MenuButton>*/}
+      <UploadButton
+        handleClick={()=>setDisplayDropZone(!displayDropZone)}
+      ></UploadButton>
       <main className="main">
         <UploadedImages
           images={images}

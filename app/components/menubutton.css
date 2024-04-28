@@ -4,9 +4,9 @@
   display: grid;
   place-content: center;
   -webkit-tap-highlight-color: transparent;
-  bottom: 10px;
+  bottom: 80px;
   z-index: 300;
-  left: 10px;
+  left: 50%;
   width: 30%;
 
 }
