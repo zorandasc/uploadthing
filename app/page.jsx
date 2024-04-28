@@ -3,13 +3,10 @@ import "./uploadPage.css";
 import { useEffect, useState } from "react";
 import imageCompression from "browser-image-compression";
 import { getAll, deleteImage } from "./actions.js";
-import NavbarBottom2 from "./components/NavbarBottom2";
 import UploadedImages from "./components/UploadedImages";
 import UploadDrop from "./components/UploadDrop";
-import MenuButton from "./components/MenuButton";
 import UploadButton from "./components/UploadButton";
 
-import { useSearchParams } from "next/navigation";
 
 const Home = () => {
   //const searchParams = useSearchParams();
@@ -69,8 +66,6 @@ const Home = () => {
 
   return (
     <>
-      {/*<NavbarBottom2 handleDropZone={showDropZone}></NavbarBottom2>*/}
-      {/*<MenuButton></MenuButton>*/}
       <UploadButton
         handleClick={()=>setDisplayDropZone(!displayDropZone)}
       ></UploadButton>

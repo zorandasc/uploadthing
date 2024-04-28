@@ -2,8 +2,6 @@ import { Inter } from "next/font/google";
 import "@uploadthing/react/styles.css";
 import "./globals.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import Navbar from "./components/Navbar"
-import NavbarBottom from "./components/NavbarBottom"
 import NavbarBottom2 from "./components/NavbarBottom2"
 
 const inter = Inter({ subsets: ["latin"] });
