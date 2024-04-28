@@ -4,7 +4,7 @@ import UploadedImages from "../components/UploadedImages";
 import { getAll } from "../actions.js";
 import { usePathname } from 'next/navigation'
 
-const page = () => {
+const LikesPage = () => {
   const pathname = usePathname()
   const [images, setImages] = useState([]);
   const handleRemove = async (key) => {};
@@ -27,4 +27,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LikesPage;

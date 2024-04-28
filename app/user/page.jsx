@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import UploadedImages from "../components/UploadedImages";
-import { getAll,deleteImage } from "../actions.js";
-import { usePathname } from 'next/navigation'
+import { getAll, deleteImage } from "../actions.js";
+import { usePathname } from "next/navigation";
 
-const page = () => {
+const UserPage = () => {
+  const pathname = usePathname();
   const [images, setImages] = useState([]);
 
   const handleRemove = async (key) => {
@@ -18,8 +19,6 @@ const page = () => {
     if (!response) setImages(oldImages);
   };
 
-  const pathname = usePathname()
-
   useEffect(() => {
     const handleGetAll = async () => {
       const data = await getAll();
@@ -27,7 +26,7 @@ const page = () => {
     };
     handleGetAll();
   }, []);
-  
+
   return (
     <main className="main">
       <UploadedImages
@@ -39,5 +38,4 @@ const page = () => {
   );
 };
 
-export default page;
-
+export default UserPage;

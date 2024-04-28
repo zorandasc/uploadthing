@@ -2,7 +2,7 @@ import React from "react";
 import "./userspage.css";
 
 
-const page = () => {
+const Userspage = () => {
  
   return (
     <section className="users">
@@ -101,4 +101,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Userspage;

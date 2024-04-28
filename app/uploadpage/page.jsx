@@ -5,7 +5,7 @@ import UploadDrop from "../components/UploadDrop";
 import imageCompression from "browser-image-compression";
 import "./uploadpage.css"
 
-const page = () => {
+const UploadPage = () => {
   const [images, setImages] = useState([]);
 
   const handleOnUploadComplete = (res) => {
@@ -62,4 +62,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default UploadPage;
