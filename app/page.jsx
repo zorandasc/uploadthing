@@ -1,5 +1,4 @@
 "use client";
-import "./uploadPage.css";
 import { useEffect, useState } from "react";
 import imageCompression from "browser-image-compression";
 import { getAll, deleteImage } from "./actions.js";
